@@ -86,3 +86,5 @@ D:\side_proc\JwtDemo\obj\Debug\net8.0\refint\JwtDemo.dll
 D:\side_proc\JwtDemo\obj\Debug\net8.0\JwtDemo.pdb
 D:\side_proc\JwtDemo\obj\Debug\net8.0\JwtDemo.genruntimeconfig.cache
 D:\side_proc\JwtDemo\obj\Debug\net8.0\ref\JwtDemo.dll
+D:\side_proc\JwtDemo\bin\Debug\net8.0\JwtDemo.staticwebassets.runtime.json
+D:\side_proc\JwtDemo\obj\Debug\net8.0\JwtDemo.sourcelink.json

@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <title>JwtDemo Tester</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: monospace;
+      background: #0f0f0f;
+      color: #e0e0e0;
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── Sidebar ── */
+    #sidebar {
+      width: 240px;
+      min-width: 240px;
+      background: #1a1a1a;
+      border-right: 1px solid #2a2a2a;
+      display: flex;
+      flex-direction: column;
+      padding: 16px 0;
+    }
+
+    #sidebar h2 {
+      font-size: 13px;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      padding: 0 16px 12px;
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      color: #aaa;
+      font-family: monospace;
+      font-size: 13px;
+      padding: 8px 16px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav-btn:hover { background: #252525; color: #fff; }
+    .nav-btn.active { background: #252525; color: #fff; border-left: 2px solid #4a9eff; }
+
+    .method-tag {
+      font-size: 10px;
+      font-weight: bold;
+      padding: 2px 5px;
+      border-radius: 3px;
+      min-width: 36px;
+      text-align: center;
+    }
+    .POST { background: #1a3a1a; color: #4caf50; }
+    .GET  { background: #1a2a3a; color: #4a9eff; }
+
+    #token-status {
+      margin-top: auto;
+      padding: 12px 16px;
+      border-top: 1px solid #2a2a2a;
+      font-size: 11px;
+    }
+    #token-status .label { color: #666; margin-bottom: 4px; }
+    #token-status .value {
+      color: #4caf50;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 100%;
+    }
+    #token-status .value.empty { color: #555; }
+
+    /* ── Main ── */
+    #main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .panel { display: none; flex-direction: column; height: 100%; }
+    .panel.active { display: flex; }
+
+    .panel-header {
+      padding: 20px 24px 16px;
+      border-bottom: 1px solid #2a2a2a;
+    }
+    .panel-header h1 { font-size: 16px; color: #fff; margin-bottom: 4px; }
+    .panel-header p { font-size: 12px; color: #666; }
+
+    .panel-body {
+      flex: 1;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .form-side {
+      width: 320px;
+      min-width: 320px;
+      padding: 20px 24px;
+      border-right: 1px solid #2a2a2a;
+      overflow-y: auto;
+    }
+
+    .response-side {
+      flex: 1;
+      padding: 20px 24px;
+      overflow-y: auto;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      color: #888;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    input, select {
+      width: 100%;
+      background: #252525;
+      border: 1px solid #333;
+      color: #e0e0e0;
+      font-family: monospace;
+      font-size: 13px;
+      padding: 8px 10px;
+      border-radius: 4px;
+      margin-bottom: 14px;
+      outline: none;
+    }
+    input:focus, select:focus { border-color: #4a9eff; }
+
+    .send-btn {
+      width: 100%;
+      background: #4a9eff;
+      color: #000;
+      border: none;
+      font-family: monospace;
+      font-size: 13px;
+      font-weight: bold;
+      padding: 10px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .send-btn:hover { background: #6ab4ff; }
+    .send-btn:disabled { background: #333; color: #666; cursor: not-allowed; }
+
+    .seed-btn {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      color: #ccc;
+      font-family: monospace;
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      text-align: left;
+    }
+    .seed-btn:hover { background: #2a2a2a; border-color: #444; color: #fff; }
+
+    .hint {
+      font-size: 11px;
+      color: #555;
+      margin-top: 12px;
+      line-height: 1.5;
+    }
+
+    /* ── Response ── */
+    .response-label { font-size: 11px; color: #666; margin-bottom: 8px; }
+
+    .status-badge {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-bottom: 12px;
+    }
+    .s2xx { background: #1a3a1a; color: #4caf50; }
+    .s4xx { background: #3a1a1a; color: #f44336; }
+    .s5xx { background: #3a2a1a; color: #ff9800; }
+
+    pre {
+      background: #161616;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      padding: 14px;
+      font-size: 12px;
+      line-height: 1.6;
+      overflow-x: auto;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+
+    .empty-state {
+      color: #444;
+      font-size: 13px;
+      margin-top: 40px;
+      text-align: center;
+    }
+
+    /* token auto-fill notice */
+    .info-box {
+      background: #1a2a3a;
+      border: 1px solid #2a3a4a;
+      border-radius: 4px;
+      padding: 10px 12px;
+      font-size: 11px;
+      color: #7ab4ff;
+      margin-bottom: 14px;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div id="sidebar">
+  <h2>JwtDemo</h2>
+
+  <button class="nav-btn active" data-panel="register">
+    <span class="method-tag POST">POST</span> /auth/register
+  </button>
+  <button class="nav-btn" data-panel="login">
+    <span class="method-tag POST">POST</span> /auth/login
+  </button>
+  <button class="nav-btn" data-panel="refresh">
+    <span class="method-tag POST">POST</span> /auth/refresh
+  </button>
+  <button class="nav-btn" data-panel="public">
+    <span class="method-tag GET">GET</span> /resource/public
+  </button>
+  <button class="nav-btn" data-panel="user">
+    <span class="method-tag GET">GET</span> /resource/user
+  </button>
+  <button class="nav-btn" data-panel="admin">
+    <span class="method-tag GET">GET</span> /resource/admin
+  </button>
+  <button class="nav-btn" data-panel="me">
+    <span class="method-tag GET">GET</span> /resource/me
+  </button>
+  <button class="nav-btn" data-panel="logout">
+    <span class="method-tag POST">POST</span> /auth/logout
+  </button>
+
+  <div id="token-status">
+    <div class="label">Access Token</div>
+    <div id="token-display" class="value empty">— chưa login —</div>
+  </div>
+</div>
+
+<!-- Main -->
+<div id="main">
+
+  <!-- Register -->
+  <div class="panel active" id="panel-register">
+    <div class="panel-header">
+      <h1>POST /auth/register</h1>
+      <p>Tạo tài khoản mới</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <label>Username</label>
+        <input id="reg-username" type="text" placeholder="bob" />
+        <label>Password</label>
+        <input id="reg-password" type="password" placeholder="Bob@123" />
+        <label>Role</label>
+        <select id="reg-role">
+          <option value="User">User</option>
+          <option value="Admin">Admin</option>
+        </select>
+        <button class="send-btn" onclick="doRegister()">Send</button>
+        <p class="hint">Seed có sẵn: admin / Admin@123 (Admin) — alice / Alice@123 (User)</p>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-register" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login -->
+  <div class="panel" id="panel-login">
+    <div class="panel-header">
+      <h1>POST /auth/login</h1>
+      <p>Đăng nhập — nhận Access Token + Refresh Token</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <label>Username</label>
+        <input id="login-username" type="text" placeholder="admin" />
+        <label>Password</label>
+        <input id="login-password" type="password" placeholder="Admin@123" />
+        <button class="send-btn" onclick="doLogin()">Send</button>
+        <p class="hint">Token sẽ được lưu tự động để dùng cho các request phía dưới.</p>
+        <div style="margin-top:16px; border-top:1px solid #2a2a2a; padding-top:14px;">
+          <div class="label" style="margin-bottom:8px;">Tài khoản có sẵn</div>
+          <div style="display:flex; gap:8px; flex-direction:column;">
+            <button class="seed-btn" onclick="fillLogin('admin','Admin@123')">
+              admin / Admin@123 <span style="color:#f0a030">Admin</span>
+            </button>
+            <button class="seed-btn" onclick="fillLogin('alice','Alice@123')">
+              alice / Alice@123 <span style="color:#4a9eff">User</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-login" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Refresh -->
+  <div class="panel" id="panel-refresh">
+    <div class="panel-header">
+      <h1>POST /auth/refresh</h1>
+      <p>Lấy cặp token mới bằng Refresh Token</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <div class="info-box">Refresh Token được tự động điền sau khi login.</div>
+        <label>Refresh Token</label>
+        <input id="refresh-token-input" type="text" placeholder="Tự động điền sau khi login..." />
+        <button class="send-btn" onclick="doRefresh()">Send</button>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-refresh" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Public -->
+  <div class="panel" id="panel-public">
+    <div class="panel-header">
+      <h1>GET /resource/public</h1>
+      <p>Endpoint công khai — không cần token</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <button class="send-btn" onclick="doGet('public')">Send</button>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-public" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- User -->
+  <div class="panel" id="panel-user">
+    <div class="panel-header">
+      <h1>GET /resource/user</h1>
+      <p>Yêu cầu JWT hợp lệ (bất kỳ role)</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <div class="info-box">Access Token được tự động gửi kèm trong header.</div>
+        <button class="send-btn" onclick="doGet('user')">Send</button>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-user" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Admin -->
+  <div class="panel" id="panel-admin">
+    <div class="panel-header">
+      <h1>GET /resource/admin</h1>
+      <p>Chỉ role Admin mới truy cập được</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <div class="info-box">Access Token được tự động gửi kèm trong header.</div>
+        <button class="send-btn" onclick="doGet('admin')">Send</button>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-admin" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Me -->
+  <div class="panel" id="panel-me">
+    <div class="panel-header">
+      <h1>GET /resource/me</h1>
+      <p>Xem tất cả claims trong token hiện tại</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <div class="info-box">Access Token được tự động gửi kèm trong header.</div>
+        <button class="send-btn" onclick="doGet('me')">Send</button>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-me" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Logout -->
+  <div class="panel" id="panel-logout">
+    <div class="panel-header">
+      <h1>POST /auth/logout</h1>
+      <p>Revoke Refresh Token — buộc đăng nhập lại</p>
+    </div>
+    <div class="panel-body">
+      <div class="form-side">
+        <div class="info-box">Refresh Token hiện tại sẽ được tự động điền.</div>
+        <label>Refresh Token</label>
+        <input id="logout-token-input" type="text" placeholder="Tự động điền sau khi login..." />
+        <button class="send-btn" onclick="doLogout()">Send</button>
+      </div>
+      <div class="response-side">
+        <div class="response-label">Response</div>
+        <div id="res-logout" class="empty-state">Chưa gửi request</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const BASE = 'http://localhost:5244';
+  let accessToken = null;
+  let refreshToken = null;
+
+  // ── Logger ──
+  function log(label, data) {
+    const time = new Date().toLocaleTimeString('vi-VN', { hour12: false });
+    console.groupCollapsed(`[${time}] ${label}`);
+    if (data !== undefined) console.log(data);
+    console.groupEnd();
+  }
+
+  // ── Navigation ──
+  document.querySelectorAll('.nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+      btn.classList.add('active');
+      document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+    });
+  });
+
+  // ── Token state ──
+  function saveTokens(at, rt) {
+    accessToken = at;
+    refreshToken = rt;
+    const el = document.getElementById('token-display');
+    if (at) {
+      el.textContent = at.substring(0, 30) + '...';
+      el.classList.remove('empty');
+      log('saveTokens → đã lưu token mới', { accessToken: at.substring(0, 40) + '...', refreshToken: rt?.substring(0, 20) + '...' });
+    } else {
+      el.textContent = '— chưa login —';
+      el.classList.add('empty');
+      log('saveTokens → cleared (logged out)');
+    }
+    const rtInput = document.getElementById('refresh-token-input');
+    if (rt) rtInput.value = rt;
+    const logoutInput = document.getElementById('logout-token-input');
+    if (rt) logoutInput.value = rt;
+  }
+
+  // ── Render response ──
+  function renderResponse(elId, status, data) {
+    const el = document.getElementById(elId);
+    const statusClass = status >= 500 ? 's5xx' : status >= 400 ? 's4xx' : 's2xx';
+    el.innerHTML = `
+      <span class="status-badge ${statusClass}">${status}</span>
+      <pre>${JSON.stringify(data, null, 2)}</pre>
+    `;
+  }
+
+  // ── API helpers ──
+  async function post(path, body) {
+    log(`POST ${path} →`, body);
+    const res = await fetch(BASE + path, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json().catch(() => ({}));
+    log(`POST ${path} ← ${res.status}`, data);
+    return { status: res.status, data };
+  }
+
+  // GET với auto-refresh khi nhận 401
+  async function get(path, isRetry = false) {
+    const headers = {};
+    if (accessToken) headers['Authorization'] = 'Bearer ' + accessToken;
+    log(`GET ${path} →`, accessToken ? { Authorization: 'Bearer ' + accessToken.substring(0, 20) + '...' } : '(no token)');
+
+    const res = await fetch(BASE + path, { headers });
+    const data = await res.json().catch(() => ({}));
+    log(`GET ${path} ← ${res.status}`, data);
+
+    if (res.status === 401 && !isRetry && refreshToken) {
+      log('401 detected → thử refresh token tự động...');
+      const refreshed = await tryRefresh();
+      if (refreshed) {
+        log('refresh OK → retry request', { path });
+        return get(path, true);
+      } else {
+        log('refresh FAIL → cần login lại');
+        saveTokens(null, null);
+      }
+    }
+
+    return { status: res.status, data };
+  }
+
+  async function tryRefresh() {
+    log('tryRefresh →', { refreshToken: refreshToken?.substring(0, 20) + '...' });
+    const res = await fetch(BASE + '/auth/refresh', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refreshToken }),
+    });
+    const data = await res.json().catch(() => ({}));
+    log(`tryRefresh ← ${res.status}`, data);
+    if (res.status === 200) {
+      saveTokens(data.accessToken, data.refreshToken);
+      return true;
+    }
+    return false;
+  }
+
+  // ── Handlers ──
+  async function doRegister() {
+    const { status, data } = await post('/auth/register', {
+      username: document.getElementById('reg-username').value,
+      password: document.getElementById('reg-password').value,
+      role: document.getElementById('reg-role').value,
+    });
+    renderResponse('res-register', status, data);
+  }
+
+  async function doLogin() {
+    const { status, data } = await post('/auth/login', {
+      username: document.getElementById('login-username').value,
+      password: document.getElementById('login-password').value,
+    });
+    if (status === 200) saveTokens(data.accessToken, data.refreshToken);
+    renderResponse('res-login', status, data);
+  }
+
+  async function doRefresh() {
+    const rt = document.getElementById('refresh-token-input').value;
+    const { status, data } = await post('/auth/refresh', { refreshToken: rt });
+    if (status === 200) saveTokens(data.accessToken, data.refreshToken);
+    renderResponse('res-refresh', status, data);
+  }
+
+  function fillLogin(username, password) {
+    document.getElementById('login-username').value = username;
+    document.getElementById('login-password').value = password;
+  }
+
+  async function doLogout() {
+    const rt = document.getElementById('logout-token-input').value;
+    const { status, data } = await post('/auth/logout', { refreshToken: rt });
+    if (status === 200) saveTokens(null, null);
+    renderResponse('res-logout', status, data);
+  }
+
+  async function doGet(endpoint) {
+    const { status, data } = await get('/resource/' + endpoint);
+    renderResponse('res-' + endpoint, status, data);
+  }
+</script>
+</body>
+</html>

@@ -45,6 +45,13 @@ public class AuthController(IUserService userService, IJwtService jwtService, IC
         return Ok(IssueTokens(user));
     }
 
+    [HttpPost("logout")]
+    public IActionResult Logout(LogoutRequest request)
+    {
+        userService.RevokeRefreshToken(request.RefreshToken);
+        return Ok(new { message = "Logged out successfully." });
+    }
+
     private TokenResponse IssueTokens(User user)
     {
         var accessToken = jwtService.GenerateAccessToken(user);

@@ -1,12 +1,125 @@
 {
   "Version": 1,
-  "Hash": "rLX8Q5AYKU3HKugHNRNzr9RB2qpRsJ6ULfwjTgEBx0E=",
+  "Hash": "8AKus5xk3JYFIWONdcEkguhLMEckz9ETTaCepFaP7eE=",
   "Source": "JwtDemo",
   "BasePath": "_content/JwtDemo",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
+  "DiscoveryPatterns": [
+    {
+      "Name": "JwtDemo\\wwwroot",
+      "Source": "JwtDemo",
+      "ContentRoot": "D:\\side_proc\\JwtDemo\\wwwroot\\",
+      "BasePath": "_content/JwtDemo",
+      "Pattern": "**"
+    }
+  ],
+  "Assets": [
+    {
+      "Identity": "D:\\side_proc\\JwtDemo\\wwwroot\\index.html",
+      "SourceId": "JwtDemo",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\side_proc\\JwtDemo\\wwwroot\\",
+      "BasePath": "_content/JwtDemo",
+      "RelativePath": "index#[.{fingerprint}]?.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "Fingerprint": "g8fv5mm6ir",
+      "Integrity": "4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI=",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\index.html"
+    }
+  ],
+  "Endpoints": [
+    {
+      "Route": "index.g8fv5mm6ir.html",
+      "AssetFile": "D:\\side_proc\\JwtDemo\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16369"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 03 Jun 2026 03:07:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "g8fv5mm6ir"
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI="
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "D:\\side_proc\\JwtDemo\\wwwroot\\index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16369"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 03 Jun 2026 03:07:15 GMT"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI="
+        }
+      ]
+    }
+  ]
 }

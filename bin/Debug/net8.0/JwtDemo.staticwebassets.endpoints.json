@@ -1,5 +1,88 @@
 {
   "Version": 1,
   "ManifestType": "Build",
-  "Endpoints": []
+  "Endpoints": [
+    {
+      "Route": "index.g8fv5mm6ir.html",
+      "AssetFile": "index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "max-age=31536000, immutable"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16369"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 03 Jun 2026 03:07:15 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "fingerprint",
+          "Value": "g8fv5mm6ir"
+        },
+        {
+          "Name": "integrity",
+          "Value": "sha256-4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI="
+        },
+        {
+          "Name": "label",
+          "Value": "index.html"
+        }
+      ]
+    },
+    {
+      "Route": "index.html",
+      "AssetFile": "index.html",
+      "Selectors": [],
+      "ResponseHeaders": [
+        {
+          "Name": "Accept-Ranges",
+          "Value": "bytes"
+        },
+        {
+          "Name": "Cache-Control",
+          "Value": "no-cache"
+        },
+        {
+          "Name": "Content-Length",
+          "Value": "16369"
+        },
+        {
+          "Name": "Content-Type",
+          "Value": "text/html"
+        },
+        {
+          "Name": "ETag",
+          "Value": "\"4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI=\""
+        },
+        {
+          "Name": "Last-Modified",
+          "Value": "Wed, 03 Jun 2026 03:07:15 GMT"
+        }
+      ],
+      "EndpointProperties": [
+        {
+          "Name": "integrity",
+          "Value": "sha256-4HuvfIuOhDVNfoZTf2N89zIRXPyTkP0gstWBMd+j9oI="
+        }
+      ]
+    }
+  ]
 }
